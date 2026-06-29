@@ -6522,45 +6522,8 @@ button, input, select, textarea {
 }
 
 /* ============================================================
-   AUTH ERROR TOAST
+   AUTH ERROR TOAST (Legacy Styles Removed - Duplicate styling clean)
    ============================================================ */
-
-.auth-toast {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10001;
-  background: rgba(244, 63, 94, 0.9);
-  backdrop-filter: blur(10px);
-  color: #fff;
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-  animation: toastIn 0.3s ease;
-  max-width: 90vw;
-  text-align: center;
-}
-
-.auth-toast svg {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-}
-
-.auth-toast.auth-toast-success {
-  background: rgba(52, 211, 153, 0.9);
-}
-
-@keyframes toastIn {
-  from { opacity: 0; transform: translateX(-50%) translateY(16px); }
-  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
-}
 
 /* ============================================================
    LOGOUT CONFIRMATION MODAL
@@ -7274,6 +7237,21 @@ body.authenticated .auth-page-container {
 
 [data-theme="light"] .auth-toast span {
   color: var(--text-main);
+}
+
+/* Responsive mobile view overrides for auth toast */
+@media (max-width: 576px) {
+  .auth-toast {
+    top: 12px;
+    right: 12px;
+    left: 12px;
+    min-width: unset;
+    max-width: unset;
+    width: auto;
+    border-radius: 10px;
+    padding: 10px 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
 }
 
 /* ================= BACKUP & RESTORE COMPONENT ================= */
