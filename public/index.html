@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Srirama Khata Book - Personal Accounts Manager</title>
+  <meta name="description" content="Srirama KhataBook is a professional digital ledger accounts manager to record your credits, debits, customer transactions, identity document cataloging, and banking records.">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- PWA Manifest & Mobile Styling -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0a0f1d">
+  <link rel="apple-touch-icon" href="images/icon-512.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+
+  <!-- ================= AUTH VIEWS ================= -->
+  <!-- Login View -->
+  <div class="auth-page-container hidden" id="auth-login-page">
+    <div class="auth-brand">
+      <div class="brand-icon"><i data-lucide="book-marked"></i></div>
+      <span class="brand-name">KhataBook</span>
+    </div>
+    <div class="auth-card">
+      <div class="auth-card-header">
+        <h1 class="auth-title" data-i18n="login_title">Welcome Back</h1>
+        <p class="auth-subtitle" data-i18n="login_subtitle">Sign in to your KhataBook account</p>
+      </div>
+      <form class="auth-form" id="login-form">
+        <div class="form-group">
+          <label for="login-email" data-i18n="email_or_username">Email or Username</label>
+          <div class="auth-input-wrapper">
+            <i data-lucide="user"></i>
+            <input type="text" id="login-email" required placeholder="" data-i18n-placeholder="email_username_placeholder" autocomplete="username">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="login-password" data-i18n="password_label">Password</label>
+          <div class="auth-input-wrapper">
+            <i data-lucide="lock"></i>
+            <input type="password" id="login-password" required placeholder="" data-i18n-placeholder="password_placeholder" autocomplete="current-password">
+            <button type="button" class="auth-eye-btn" id="login-pw-toggle"><i data-lucide="eye" id="login-pw-icon"></i></button>
+          </div>
+        </div>
+        <div class="auth-options-row">
+          <label class="auth-remember-label">
+            <input type="checkbox" id="login-remember-me">
+            <span data-i18n="remember_me">Remember Me</span>
+          </label>
+          <a href="#forgot-password" class="auth-forgot-link" id="goto-forgot-link" data-i18n="forgot_password">Forgot Password?</a>
+        </div>
+        <button type="submit" class="auth-btn-primary" id="login-submit-btn">
+          <i data-lucide="log-in"></i>
+          <span data-i18n="sign_in">Sign In</span>
+        </button>
+        <div class="auth-divider"><span data-i18n="or_label">or</span></div>
+        <div id="login-google-btn" class="google-btn-container"></div>
+        <div class="auth-footer-links">
+          <span data-i18n="no_account">Don't have an account?</span>
+          <a href="#register" id="goto-register-link" data-i18n="create_account">Create Account</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Register View -->
+  <div class="auth-page-container hidden" id="auth-register-page">
+    <div class="auth-brand">
+      <div class="brand-icon"><i data-lucide="book-marked"></i></div>
+      <span class="brand-name">KhataBook</span>
+    </div>
+    <div class="auth-card auth-card-wide">
+      <div class="auth-card-header">
+        <h1 class="auth-title" data-i18n="register_title">Create Account</h1>
+        <p class="auth-subtitle" data-i18n="register_subtitle">Set up your KhataBook account</p>
+      </div>
+      <form class="auth-form" id="register-form">
+        <div class="auth-two-col">
+          <div class="form-group">
+            <label for="reg-name" data-i18n="user_name">Full Name</label>
+            <div class="auth-input-wrapper">
+              <i data-lucide="user"></i>
+              <input type="text" id="reg-name" required placeholder="" data-i18n-placeholder="enter_full_name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="reg-username" data-i18n="username_label">Username</label>
+            <div class="auth-input-wrapper">
+              <i data-lucide="at-sign"></i>
+              <input type="text" id="reg-username" required placeholder="" data-i18n-placeholder="choose_username">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="reg-email" data-i18n="email_label">Email Address</label>
+          <div class="auth-input-wrapper">
+            <i data-lucide="mail"></i>
+            <input type="email" id="reg-email" required placeholder="" data-i18n-placeholder="enter_email">
+          </div>
+        </div>
+        <div class="auth-two-col">
+          <div class="form-group">
+            <label for="reg-mobile" data-i18n="mobile_label">Mobile (Optional)</label>
+            <div class="auth-input-wrapper">
+              <i data-lucide="phone"></i>
+              <input type="tel" id="reg-mobile" placeholder="" data-i18n-placeholder="enter_mobile">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="reg-role" data-i18n="role_label">Role</label>
+            <div class="auth-select-wrapper">
+              <i data-lucide="shield-check"></i>
+              <select id="reg-role" class="auth-select">
+                <option value="Owner">Owner</option>
+                <option value="Admin">Admin</option>
+                <option value="Staff">Staff</option>
+                <option value="Viewer">Viewer</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="auth-two-col">
+          <div class="form-group">
+            <label for="reg-password" data-i18n="password_label">Password</label>
+            <div class="auth-input-wrapper">
+              <i data-lucide="lock"></i>
+              <input type="password" id="reg-password" required placeholder="" data-i18n-placeholder="min_6_chars" autocomplete="new-password">
+              <button type="button" class="auth-eye-btn" id="reg-pw-toggle"><i data-lucide="eye" id="reg-pw-icon"></i></button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="reg-confirm-password" data-i18n="confirm_password">Confirm Password</label>
+            <div class="auth-input-wrapper">
+              <i data-lucide="lock"></i>
+              <input type="password" id="reg-confirm-password" required placeholder="" data-i18n-placeholder="repeat_password" autocomplete="new-password">
+              <button type="button" class="auth-eye-btn" id="reg-confirm-pw-toggle"><i data-lucide="eye" id="reg-confirm-pw-icon"></i></button>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="auth-btn-primary" id="register-submit-btn">
+          <i data-lucide="user-plus"></i>
+          <span data-i18n="create_account">Create Account</span>
+        </button>
+        <div class="auth-divider"><span data-i18n="or_label">or</span></div>
+        <div id="register-google-btn" class="google-btn-container"></div>
+        <div class="auth-footer-links">
+          <span data-i18n="have_account">Already have an account?</span>
+          <a href="#login" id="goto-login-link" data-i18n="sign_in">Sign In</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Forgot Password View -->
+  <div class="auth-page-container hidden" id="auth-forgot-page">
+    <div class="auth-brand">
+      <div class="brand-icon"><i data-lucide="book-marked"></i></div>
+      <span class="brand-name">KhataBook</span>
+    </div>
+    <div class="auth-card" id="forgot-step-1">
+      <div class="auth-card-header">
+        <h1 class="auth-title" data-i18n="forgot_title">Forgot Password</h1>
+        <p class="auth-subtitle" data-i18n="forgot_subtitle">Enter your email to receive a reset code</p>
+      </div>
+      <form class="auth-form" id="forgot-email-form">
+        <div class="form-group">
+          <label for="forgot-email" data-i18n="email_label">Email Address</label>
+          <div class="auth-input-wrapper">
+            <i data-lucide="mail"></i>
+            <input type="email" id="forgot-email" required placeholder="" data-i18n-placeholder="enter_email">
+          </div>
+        </div>
+        <button type="submit" class="auth-btn-primary">
+          <i data-lucide="send"></i>
+          <span data-i18n="send_reset_code">Send Reset Code</span>
+        </button>
+        <div class="auth-footer-links">
+          <a href="#login" id="back-to-login-link" data-i18n="back_to_login">← Back to Login</a>
+        </div>
+      </form>
+    </div>
+    <div class="auth-card hidden" id="forgot-step-2">
+      <div class="auth-card-header">
+        <div class="auth-demo-code-banner" id="demo-code-banner" style="display:none;">
+          <i data-lucide="info"></i>
+          <span>Demo Reset Code: <strong id="demo-code-display"></strong></span>
+        </div>
+        <h1 class="auth-title" data-i18n="reset_password">Reset Password</h1>
+        <p class="auth-subtitle" data-i18n="enter_code_subtitle">Enter the code sent to your email</p>
+      </div>
+      <form class="auth-form" id="forgot-reset-form">
+        <div class="form-group">
+          <label for="reset-code" data-i18n="reset_code_label">Reset Code (6 digits)</label>
+          <div class="auth-input-wrapper">
+            <i data-lucide="hash"></i>
+            <input type="text" id="reset-code" required placeholder="000000" maxlength="6" inputmode="numeric">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="reset-new-password" data-i18n="new_password">New Password</label>
+          <div class="auth-input-wrapper">
+            <i data-lucide="lock"></i>
+            <input type="password" id="reset-new-password" required placeholder="" data-i18n-placeholder="min_6_chars">
+            <button type="button" class="auth-eye-btn" id="reset-pw-toggle"><i data-lucide="eye" id="reset-pw-icon"></i></button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="reset-confirm-password" data-i18n="confirm_password">Confirm New Password</label>
+          <div class="auth-input-wrapper">
+            <i data-lucide="lock"></i>
+            <input type="password" id="reset-confirm-password" required placeholder="" data-i18n-placeholder="repeat_password">
+          </div>
+        </div>
+        <button type="submit" class="auth-btn-primary">
+          <i data-lucide="check-circle"></i>
+          <span data-i18n="reset_password">Reset Password</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- App Wrapper -->
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation for Desktop -->
+    <aside class="app-sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">
+          <i data-lucide="book-marked"></i>
+        </div>
+        <span class="brand-name">KhataBook</span>
+      </div>
+      <nav class="sidebar-menu">
+        <a href="#dashboard" class="menu-item active" id="nav-dashboard">
+          <i data-lucide="layout-dashboard"></i>
+          <span data-i18n="dashboard">Dashboard</span>
+        </a>
+        <a href="#khata-book" class="menu-item" id="nav-khata-book">
+          <i data-lucide="notebook"></i>
+          <span data-i18n="khata_book">Khata Book</span>
+        </a>
+        <a href="#aadhaar-cards" class="menu-item" id="nav-aadhaar-cards">
+          <i data-lucide="id-card"></i>
+          <span data-i18n="aadhaar_cards">Aadhaar Cards</span>
+        </a>
+        <a href="#bank-accounts" class="menu-item" id="nav-bank-accounts">
+          <i data-lucide="landmark"></i>
+          <span data-i18n="bank_accounts">Bank Accounts</span>
+        </a>
+        <a href="#profile-settings" class="menu-item" id="nav-profile-settings">
+          <i data-lucide="user"></i>
+          <span data-i18n="profile_settings">Profile Settings</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <span class="footer-time" id="sidebar-clock">10:57:36 IST</span>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+      
+      <!-- Top Header Bar -->
+      <header class="app-header">
+        <div class="header-left">
+          <div class="header-logo-container">
+            <div class="brand-icon">
+              <i data-lucide="book-marked"></i>
+            </div>
+            <span class="brand-name">KhataBook</span>
+          </div>
+          <!-- Hidden menu btn for JS selector compatibility -->
+          <button class="mobile-menu-toggle" id="mobile-menu-btn" style="display: none;">
+            <i data-lucide="menu"></i>
+          </button>
+          <a href="#dashboard" class="btn-secondary btn-icon-text back-btn hidden" id="header-back-btn">
+            <i data-lucide="arrow-left"></i>
+            <span>Back</span>
+          </a>
+          <h1 class="header-title" id="page-title">Dashboard</h1>
+        </div>
+        <div class="header-center no-mobile">
+          <div class="header-search-bar">
+            <i data-lucide="search"></i>              <input type="text" placeholder="" data-i18n-placeholder="globally_search" disabled>
+          </div>
+        </div>
+        <div class="header-right">
+          <button id="theme-toggle-btn" class="theme-toggle-btn btn-secondary btn-icon-only" title="Toggle Theme">
+            <i data-lucide="sun" id="theme-toggle-icon"></i>
+          </button>
+          <div class="timezone-badge no-mobile">
+            <i data-lucide="globe"></i>
+            <span>IST (UTC+5:30)</span>
+          </div>
+          <div class="header-profile-container" style="position: relative;">
+            <div class="header-profile-menu" id="header-profile-btn" title="User Profile" data-i18n-title="my_profile">
+              <div class="profile-avatar" id="header-profile-avatar">U</div>
+            </div>
+            
+            <!-- Profile Dropdown Menu -->
+            <div class="profile-dropdown-menu hidden" id="profile-dropdown">
+              <div class="dropdown-header">
+                <div class="dropdown-avatar" id="dropdown-profile-avatar">U</div>
+                <div class="dropdown-user-info">
+                  <span class="dropdown-label"><i data-lucide="user" style="width: 12px; height: 12px; display: inline-block; vertical-align: middle;"></i> <span data-i18n="my_profile">User Profile</span></span>
+                  <h4 id="dropdown-user-name">KhataBook Owner</h4>
+                  <span id="dropdown-user-email">owner@email.com</span>
+                </div>
+              </div>
+              <div class="dropdown-divider"></div>
+              
+              <a href="#profile-settings" class="dropdown-item" id="dropdown-language">
+                <i data-lucide="languages"></i>
+                <span data-i18n="language_label">Language</span>
+              </a>
+              
+              <a href="#profile-settings" class="dropdown-item" id="dropdown-theme">
+                <i data-lucide="palette"></i>
+                <span data-i18n="theme_label">Theme</span>
+              </a>
+              
+              <a href="#profile-settings" class="dropdown-item" id="dropdown-preferences">
+                <i data-lucide="settings"></i>
+                <span data-i18n="preferences">Preferences</span>
+              </a>
+              
+              <a href="#profile-settings" class="dropdown-item" id="dropdown-security">
+                <i data-lucide="lock"></i>
+                <span data-i18n="security">Security Settings</span>
+              </a>
+              
+              <a href="#profile-settings" class="dropdown-item" id="dropdown-activity">
+                <i data-lucide="history"></i>
+                <span data-i18n="activity_log">Activity History</span>
+              </a>
+              
+              <a href="#profile-settings" class="dropdown-item" id="dropdown-backup">
+                <i data-lucide="download-cloud"></i>
+                <span data-i18n="backup_export">Backup & Export</span>
+              </a>
+              
+              <a href="#profile-settings" class="dropdown-item" id="dropdown-timezone">
+                <i data-lucide="globe"></i>
+                <span data-i18n="timezone_label">Timezone</span>
+              </a>
+              
+              <div class="dropdown-divider"></div>
+              
+              <button class="dropdown-item logout-btn" id="profile-logout-btn">
+                <i data-lucide="log-out"></i>
+                <span data-i18n="logout">Logout</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- View Container -->
+      <div class="view-content">
+
+        <!-- ================= VIEW 1: DASHBOARD ================= -->
+        <section id="view-dashboard" class="app-view active-view">
+          <div class="dashboard-welcome">
+            <h2 class="welcome-heading" id="dashboard-welcome-heading" data-i18n="welcome_title">Welcome to Khata Book Manager</h2>
+            <p class="welcome-sub" data-i18n="welcome_subtitle">Manage your ledger accounts, documents, and banking details efficiently from a single dashboard.</p>
+          </div>
+
+          <!-- Dashboard Overview Summary Stats -->
+          <div class="dashboard-summary-grid">
+            <div class="dash-stat-card get-card">
+              <div class="dash-stat-header">
+                <span data-i18n="receivables">Total You Will Get</span>
+                <div class="dash-stat-icon"><i data-lucide="arrow-down-left"></i></div>
+              </div>
+              <div class="dash-stat-value" id="dash-receivables">Rs. 0.00</div>
+              <div class="dash-stat-sub" data-i18n="receivable_from">Receivable from customers</div>
+            </div>
+            
+            <div class="dash-stat-card give-card">
+              <div class="dash-stat-header">
+                <span data-i18n="payables">Total You Will Give</span>
+                <div class="dash-stat-icon"><i data-lucide="arrow-up-right"></i></div>
+              </div>
+              <div class="dash-stat-value" id="dash-payables">Rs. 0.00</div>
+              <div class="dash-stat-sub" data-i18n="payable_advance">Payable (advance balances)</div>
+            </div>
+
+            <div class="dash-stat-card net-card" id="dash-net-card">
+              <div class="dash-stat-header">
+                <span data-i18n="net_outstanding">Total Balance</span>
+                <div class="dash-stat-icon"><i data-lucide="wallet"></i></div>
+              </div>
+              <div class="dash-stat-value" id="dash-net-balance">Rs. 0.00</div>
+              <div class="dash-stat-sub" id="dash-net-status">Settled</div>
+            </div>
+
+            <div class="dash-stat-card active-card">
+              <div class="dash-stat-header">
+                <span data-i18n="total_customers">Customers</span>
+                <div class="dash-stat-icon"><i data-lucide="users"></i></div>
+              </div>
+              <div class="dash-stat-value" id="dash-customers-count">0</div>
+              <div class="dash-stat-sub" id="dash-customers-active">0 Active Ledgers</div>
+            </div>
+          </div>
+
+          <!-- Dashboard Core Split Layout -->
+          <div class="dashboard-split-layout">
+            <!-- Left Side: App Modules -->
+            <div class="dashboard-modules-section">
+              <h3 class="dash-section-title" data-i18n="app_modules">Application Modules</h3>
+              <div class="modules-grid" id="modules-container">
+                <div class="module-card-skeleton"></div>
+                <div class="module-card-skeleton"></div>
+                <div class="module-card-skeleton"></div>
+              </div>
+            </div>
+
+            <!-- Right Side: Recent Transactions Timeline -->
+            <div class="dashboard-timeline-section">
+              <h3 class="dash-section-title" data-i18n="recent_ledger_entries">Recent Ledger Entries</h3>
+              <div class="timeline-container" id="dash-recent-timeline">
+                <div class="timeline-empty"><i data-lucide="info"></i> No recent entries found.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= VIEW 2: KHATA BOOK ================= -->
+        <section id="view-khata-book" class="app-view">
+          <div class="khata-book-layout">
+            
+            <!-- Customer List Sidebar -->
+            <div class="customers-sidebar">
+              <div class="sidebar-search-bar">
+                <div class="search-input-wrapper">
+                  <i data-lucide="search" class="search-icon"></i>
+                  <input type="text" id="customer-search-input" placeholder="" data-i18n-placeholder="search_customer_placeholder">
+                </div>
+              </div>
+
+              <!-- Combined Search Filters -->
+              <div class="sidebar-filters-group">
+                <select id="customer-filter-balance" class="filter-dropdown">
+                  <option value="all" data-i18n="all_balances">All Balances</option>
+                  <option value="positive" data-i18n="positive_balance">Positive Balance (Give)</option>
+                  <option value="negative" data-i18n="negative_balance">Negative Balance (Get)</option>
+                  <option value="zero" data-i18n="zero_balance">Zero Balance</option>
+                </select>
+                <select id="customer-filter-activity" class="filter-dropdown">
+                  <option value="all" data-i18n="all_activity">All Activity</option>
+                  <option value="active" data-i18n="active_customers">Active Customers</option>
+                  <option value="inactive" data-i18n="inactive_customers">Inactive Customers</option>
+                </select>
+              </div>
+
+              <!-- Customer Sorting Selector -->
+              <div class="sidebar-sort-options">
+                <label for="customer-sort-select" data-i18n="sort_by">Sort:</label>
+                <select id="customer-sort-select">
+                  <option value="latest_transaction" data-i18n="latest_transaction">Latest Transaction</option>
+                  <option value="oldest_transaction" data-i18n="oldest_transaction">Oldest Transaction</option>
+                  <option value="recently_created" data-i18n="recently_created">Recently Created</option>
+                  <option value="oldest_created" data-i18n="oldest_created">Oldest Created</option>
+                  <option value="name_asc" data-i18n="name_asc">Name (A-Z)</option>
+                  <option value="name_desc" data-i18n="name_desc">Name (Z-A)</option>
+                  <option value="highest_balance" data-i18n="highest_balance">Highest Balance</option>
+                  <option value="lowest_balance" data-i18n="lowest_balance">Lowest Balance</option>
+                  <option value="highest_credit" data-i18n="highest_credit">Highest Credit</option>
+                  <option value="highest_debit" data-i18n="highest_debit">Highest Debit</option>
+                </select>
+              </div>
+              
+              <!-- Customer List -->
+              <div class="customers-list-container">
+                <ul class="customers-list" id="customers-list-ul">
+                  <!-- Dynamic Customer Items -->
+                </ul>
+              </div>
+
+              <!-- Add Customer Button -->
+              <button class="btn-primary add-customer-fab" id="open-add-customer-modal-btn">
+                <i data-lucide="plus-circle"></i>
+                <span data-i18n="add_customer">New Customer</span>
+              </button>
+            </div>
+
+            <!-- Customer Ledger Detail Pane -->
+            <div class="ledger-detail-pane" id="ledger-detail-container">
+              <!-- Placeholder when no customer is selected -->
+              <div class="ledger-placeholder" id="ledger-placeholder-view">
+                <div class="placeholder-icon">
+                  <i data-lucide="notebook-tabs"></i>
+                </div>
+                <h3 data-i18n="select_customer">Select a Customer</h3>
+                <p data-i18n="select_customer_desc">Choose a customer from the side list to view their ledger calculations, manage entries, and download statements.</p>
+              </div>
+
+              <!-- Active Customer Ledger View -->
+              <div class="ledger-active-view hidden" id="ledger-active-view">
+                
+                <!-- Customer Profile Header Panel -->
+                <div class="customer-profile-banner">
+                  <div class="cust-large-avatar" id="ledger-cust-avatar">-</div>
+                  <div class="cust-banner-details">
+                    <div class="cust-title-row">
+                      <h2 class="customer-name-display" id="ledger-profile-name">-</h2>
+                      <span class="status-badge" id="ledger-profile-status">Active Ledger</span>
+                    </div>
+                    <p class="customer-subtitle" id="ledger-profile-mobile-sub">Mobile: -</p>
+                  </div>
+                </div>
+
+                <!-- Customer Info Grid (2×2) -->
+                <div class="customer-info-grid">
+                  <div class="info-item">
+                    <span class="info-label" data-i18n="customer_name">Customer Name</span>
+                    <span class="info-value" id="ledger-cust-name">-</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label" data-i18n="customer_phone">Mobile</span>
+                    <span class="info-value" id="ledger-cust-phone">-</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label" data-i18n="created">Created</span>
+                    <span class="info-value" id="ledger-cust-created">-</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label" data-i18n="last_activity">Last Activity</span>
+                    <span class="info-value" id="ledger-cust-last-active">-</span>
+                  </div>
+                </div>
+
+                <!-- Customer Action Buttons -->
+                <div class="customer-action-buttons">
+                  <button class="btn-primary action-btn" id="customer-add-txn-btn">
+                    <i data-lucide="plus"></i>
+                    <span data-i18n="add_transaction">Add Transaction</span>
+                  </button>
+                  <div class="action-row">
+                    <button class="btn-secondary action-btn" id="edit-customer-btn">
+                      <i data-lucide="user-cog"></i>
+                      <span data-i18n="edit_profile">Edit Profile</span>
+                    </button>
+                    <button class="btn-secondary action-btn" id="download-statement-btn-mobile">
+                      <i data-lucide="download"></i>
+                      <span data-i18n="download">Download</span>
+                    </button>
+                  </div>
+                  <button class="btn-danger-outline action-btn" id="delete-customer-btn">
+                    <i data-lucide="trash-2"></i>
+                    <span data-i18n="delete_customer">Delete Account</span>
+                  </button>
+                </div>
+
+
+
+                <!-- Ledger Summary Dashboard Cards (5 Grid Items) -->
+                <div class="ledger-summary-grid" id="ledger-summary-panel">
+                  
+                  <div class="summary-card balance-card" id="summary-card-balance">
+                    <div class="summary-card-header">
+                      <span data-i18n="net_balance_header">TOTAL BALANCE</span>
+                      <i data-lucide="wallet"></i>
+                    </div>
+                    <div class="summary-card-value" id="summary-balance-val">Rs. 0.00</div>
+                    <div class="summary-card-status" id="summary-balance-status">Settled</div>
+                  </div>
+
+                  <div class="summary-card credit-card" id="summary-card-credits">
+                    <div class="summary-card-header">
+                      <span data-i18n="total_credit_header">TOTAL CREDIT</span>
+                      <i data-lucide="arrow-down-left"></i>
+                    </div>
+                    <div class="summary-card-value text-green" id="summary-credit-val">Rs. 0.00</div>
+                    <div class="summary-card-sub text-green" data-i18n="money_received">Money Received (+)</div>
+                  </div>
+
+                  <div class="summary-card debit-card" id="summary-card-debits">
+                    <div class="summary-card-header">
+                      <span data-i18n="total_debit_header">TOTAL DEBIT</span>
+                      <i data-lucide="arrow-up-right"></i>
+                    </div>
+                    <div class="summary-card-value text-red" id="summary-debit-val">Rs. 0.00</div>
+                    <div class="summary-card-sub text-red" data-i18n="money_given">Money Given (-)</div>
+                  </div>
+
+                  <div class="summary-card text-card" id="summary-card-count">
+                    <div class="summary-card-header">
+                      <span data-i18n="transactions_header">TRANSACTIONS</span>
+                      <i data-lucide="receipt"></i>
+                    </div>
+                    <div class="summary-card-value" id="summary-count-val">0</div>
+                    <div class="summary-card-sub" data-i18n="total_entries">Total Entries</div>
+                  </div>
+
+                  <div class="summary-card text-card" id="summary-card-activity">
+                    <div class="summary-card-header">
+                      <span data-i18n="last_activity_header">LAST ACTIVITY</span>
+                      <i data-lucide="history"></i>
+                    </div>
+                    <div class="summary-card-value" id="summary-activity-val" style="font-size: 15px; font-weight:600; padding-top:8px;">Never</div>
+                    <div class="summary-card-sub" data-i18n="latest_record">Latest Record</div>
+                  </div>
+
+                </div>
+
+                <!-- Ledger Filter & Search Bar -->
+                <div class="ledger-filters-card">
+                  <div class="filter-row">
+                    <div class="filter-col flex-grow">
+                      <label data-i18n="search_description">Search Description</label>
+                      <div class="filter-search-wrapper">
+                        <i data-lucide="search"></i>
+                        <input type="text" id="filter-notes-search" placeholder="" data-i18n-placeholder="filter_notes_search_placeholder">
+                      </div>
+                    </div>
+                    <div class="filter-col">
+                      <label data-i18n="transaction_type">Transaction Type</label>
+                      <select id="filter-txn-type">
+                        <option value="">All Types</option>
+                        <option value="credit">Credit Only</option>
+                        <option value="debit">Debit Only</option>
+                      </select>
+                    </div>
+                    <div class="filter-col">
+                      <label data-i18n="sort_ledger">Sort Ledger</label>
+                      <select id="filter-txn-sort">
+                        <option value="date_desc">Newest First</option>
+                        <option value="date_asc">Oldest First</option>
+                        <option value="amount_desc">Amount: High to Low</option>
+                        <option value="amount_asc">Amount: Low to High</option>
+                        <option value="note_asc">Description (A-Z)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Ledger Transactions Table/List (Double Column Layout) -->
+                <div class="transactions-ledger-container" id="ledger-print-area">
+                  <!-- Mobile Transaction Cards -->
+                  <div class="transactions-cards-wrapper" id="transactions-list-cards">
+                    <!-- Dynamic cards loaded via app.js -->
+                  </div>
+                  
+                  <div class="transactions-table-wrapper">
+                    <table class="transactions-table">
+                      <thead>
+                        <tr>
+                          <th data-i18n="date_time">Date & Time</th>
+                          <th data-i18n="type">Type</th>
+                          <th data-i18n="description_note">Description/Note</th>
+                          <th data-i18n="amount" style="text-align: right;">Amount</th>
+                          <th data-i18n="running_balance" style="text-align: right;">Running Balance</th>
+                          <th data-i18n="actions" style="text-align: center;" class="no-print">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="transactions-list-tbody">
+                        <!-- Dynamic transaction rows -->
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="empty-transactions-view hidden" id="empty-transactions-view">
+                    <i data-lucide="receipt"></i>
+                    <p data-i18n="no_transactions_filter">No transactions found matching the filters.</p>
+                  </div>
+                </div>
+
+                <!-- Statement & Print Footer Actions -->
+                <div class="ledger-footer-actions">
+                  <div class="statement-download-box">
+                    <div class="statement-inputs-group">
+                      <label data-i18n="statement_period">Statement Period:</label>
+                      <div class="statement-dates">
+                        <input type="date" id="stmt-start-date">
+                        <span data-i18n="to">to</span>
+                        <input type="date" id="stmt-end-date">
+                      </div>
+                    </div>
+                    <div class="statement-buttons-group">
+                      <button class="btn-primary btn-icon-text" id="download-statement-btn" style="height: 38px;">
+                        <i data-lucide="download"></i>
+                        <span data-i18n="download_statement">Download PDF</span>
+                      </button>
+                      <button class="btn-secondary btn-icon-text" id="print-statement-btn" style="height: 38px;">
+                        <i data-lucide="printer"></i>
+                        <span data-i18n="print_statement">Print Statement</span>
+                      </button>
+                      <button class="btn-secondary btn-icon-text" id="share-statement-btn" style="height: 38px;">
+                        <i data-lucide="share-2"></i>
+                        <span data-i18n="share_statement">Share Statement</span>
+                      </button>
+                      <button class="btn-secondary btn-icon-text" id="export-statement-btn" style="height: 38px;">
+                        <i data-lucide="file-spreadsheet"></i>
+                        <span data-i18n="export_csv">Export CSV</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Floating Add Transaction FAB -->
+                <button class="btn-primary add-txn-fab no-print" id="open-add-txn-modal-btn" title="Add Transaction">
+                  <i data-lucide="plus"></i>
+                  <span data-i18n="add_transaction">Add Transaction</span>
+                </button>
+
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ================= VIEW 3: AADHAAR CARDS ================= -->
+        <section id="view-aadhaar-cards" class="app-view">
+          <div class="module-page-container">
+            <!-- Module Header -->
+            <div class="module-page-header">
+              <div class="module-header-left">
+                <div class="module-page-icon">
+                  <i data-lucide="id-card"></i>
+                </div>
+                <div>
+                  <h2 class="module-page-title" data-i18n="aadhaar_cards">Aadhaar Cards</h2>
+                  <p class="module-page-subtitle" data-i18n="aadhaar_subtitle">Store and manage Aadhaar identity cards</p>
+                </div>
+              </div>
+              <div class="module-header-actions">
+                <div class="module-search-wrapper">
+                  <i data-lucide="search"></i>
+                  <input type="text" id="aadhaar-search-input" placeholder="" data-i18n-placeholder="search_aadhaar_placeholder">
+                </div>
+                <button class="btn-primary" id="open-add-aadhaar-modal-btn">
+                  <i data-lucide="plus"></i>
+                  <span data-i18n="add_aadhaar">Add Aadhaar Card</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Aadhaar Cards Grid -->
+            <div class="id-cards-grid" id="aadhaar-cards-container">
+              <!-- Cards rendered dynamically -->
+            </div>
+
+            <!-- Empty State -->
+            <div class="id-cards-empty hidden" id="aadhaar-cards-empty">
+              <i data-lucide="id-card"></i>
+              <h3 data-i18n="empty_aadhaar_title">No Aadhaar Cards Yet</h3>
+              <p data-i18n="empty_aadhaar_sub">Add your first Aadhaar card to get started.</p>
+              <button class="btn-primary" id="aadhaar-empty-add-btn">
+                <i data-lucide="plus"></i>
+                <span data-i18n="add_aadhaar">Add Aadhaar Card</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= VIEW 4: BANK ACCOUNTS ================= -->
+        <section id="view-bank-accounts" class="app-view">
+          <div class="module-page-container">
+            <!-- Module Header -->
+            <div class="module-page-header">
+              <div class="module-header-left">
+                <div class="module-page-icon">
+                  <i data-lucide="landmark"></i>
+                </div>
+                <div>
+                  <h2 class="module-page-title" data-i18n="bank_accounts">Bank Accounts</h2>
+                  <p class="module-page-subtitle" data-i18n="bank_subtitle">Manage your bank account details securely</p>
+                </div>
+              </div>
+              <div class="module-header-actions">
+                <div class="module-search-wrapper">
+                  <i data-lucide="search"></i>
+                  <input type="text" id="bank-search-input" placeholder="" data-i18n-placeholder="search_bank_placeholder">
+                </div>
+                <button class="btn-primary" id="open-add-bank-modal-btn">
+                  <i data-lucide="plus"></i>
+                  <span data-i18n="add_bank">Add Bank Account</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Bank Cards Grid -->
+            <div class="id-cards-grid" id="bank-cards-container">
+              <!-- Cards rendered dynamically -->
+            </div>
+
+            <!-- Empty State -->
+            <div class="id-cards-empty hidden" id="bank-cards-empty">
+              <i data-lucide="landmark"></i>
+              <h3 data-i18n="empty_bank_title">No Bank Accounts Yet</h3>
+              <p data-i18n="empty_bank_sub">Add your first bank account to get started.</p>
+              <button class="btn-primary" id="bank-empty-add-btn">
+                <i data-lucide="plus"></i>
+                <span data-i18n="add_bank">Add Bank Account</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= VIEW 5: PROFILE & SETTINGS CENTER (MENU GRID) ================= -->
+        <section id="view-profile-settings" class="app-view">
+          <div class="profile-menu-container">
+            <!-- Compact Profile Header -->
+            <div class="profile-menu-header">
+              <div class="profile-menu-avatar" id="settings-main-avatar">U</div>
+              <div class="profile-menu-info">
+                <h2 id="settings-main-name">KhataBook Owner</h2>
+                <div class="profile-menu-meta">
+                  <span class="profile-menu-role" id="settings-main-role">Owner</span>
+                  <span class="profile-menu-status" data-i18n="active_status">Active</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2-Column Menu Grid -->
+            <div class="profile-menu-grid">
+              <a href="#profile" class="profile-menu-card">
+                <div class="menu-card-icon"><i data-lucide="user"></i></div>
+                <span class="menu-card-label" data-i18n="my_profile">My Profile</span>
+                <span class="menu-card-arrow"><i data-lucide="chevron-right"></i></span>
+              </a>
+              <a href="#profile/edit" class="profile-menu-card">
+                <div class="menu-card-icon"><i data-lucide="user-cog"></i></div>
+                <span class="menu-card-label" data-i18n="edit_profile">Edit Profile</span>
+                <span class="menu-card-arrow"><i data-lucide="chevron-right"></i></span>
+              </a>
+              <a href="#profile/preferences" class="profile-menu-card">
+                <div class="menu-card-icon"><i data-lucide="settings"></i></div>
+                <span class="menu-card-label" data-i18n="preferences">Preferences</span>
+                <span class="menu-card-arrow"><i data-lucide="chevron-right"></i></span>
+              </a>
+              <a href="#profile/security" class="profile-menu-card">
+                <div class="menu-card-icon"><i data-lucide="lock"></i></div>
+                <span class="menu-card-label" data-i18n="security">Security Settings</span>
+                <span class="menu-card-arrow"><i data-lucide="chevron-right"></i></span>
+              </a>
+              <a href="#profile/activity" class="profile-menu-card">
+                <div class="menu-card-icon"><i data-lucide="history"></i></div>
+                <span class="menu-card-label" data-i18n="activity_log">Activity History</span>
+                <span class="menu-card-arrow"><i data-lucide="chevron-right"></i></span>
+              </a>
+              <a href="#profile/backup" class="profile-menu-card">
+                <div class="menu-card-icon"><i data-lucide="download-cloud"></i></div>
+                <span class="menu-card-label" data-i18n="backup_export">Backup & Export</span>
+                <span class="menu-card-arrow"><i data-lucide="chevron-right"></i></span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= VIEW 6: PROFILE MY PROFILE (SUB-PAGE) ================= -->
+        <section id="view-profile-my" class="app-view">
+          <div class="profile-sub-page">
+            <a href="#profile-settings" class="profile-back-btn">
+              <i data-lucide="arrow-left"></i>
+              <span data-i18n="back_to_settings">Back to Settings</span>
+            </a>
+            <!-- Profile Header Card -->
+            <div class="profile-hero-card">
+              <div class="profile-hero-avatar-ring">
+                <img id="my-profile-pic-sub" class="profile-hero-pic" src="" alt="Profile picture" style="display:none;">
+                <div id="my-profile-initials-sub" class="profile-hero-initials">U</div>
+              </div>
+              <div class="profile-hero-info">
+                <h2 class="profile-hero-name" id="info-username-sub">KhataBook Owner</h2>
+                <div class="profile-hero-badges">
+                  <span class="profile-badge profile-badge-role" id="info-role-badge-sub">Owner</span>
+                  <span class="profile-badge profile-badge-status" data-i18n="active_status">Active</span>
+                </div>
+              </div>
+            </div>
+            <!-- Info Cards Grid -->
+            <div class="profile-info-cards-grid">
+              <div class="profile-info-card">
+                <div class="info-card-icon"><i data-lucide="user-check"></i></div>
+                <div class="info-card-body">
+                  <span class="info-card-label" data-i18n="role_label">Role</span>
+                  <span class="info-card-value" id="info-role-sub">-</span>
+                </div>
+              </div>
+              <div class="profile-info-card">
+                <div class="info-card-icon"><i data-lucide="mail"></i></div>
+                <div class="info-card-body">
+                  <span class="info-card-label" data-i18n="email_label">Email Address</span>
+                  <span class="info-card-value" id="info-email-sub">-</span>
+                </div>
+              </div>
+              <div class="profile-info-card">
+                <div class="info-card-icon"><i data-lucide="phone"></i></div>
+                <div class="info-card-body">
+                  <span class="info-card-label" data-i18n="mobile_label">Mobile Number</span>
+                  <span class="info-card-value" id="info-mobile-sub">-</span>
+                </div>
+              </div>
+              <div class="profile-info-card">
+                <div class="info-card-icon"><i data-lucide="calendar"></i></div>
+                <div class="info-card-body">
+                  <span class="info-card-label" data-i18n="created_date">Account Created</span>
+                  <span class="info-card-value" id="info-created-sub">-</span>
+                </div>
+              </div>
+              <div class="profile-info-card">
+                <div class="info-card-icon"><i data-lucide="log-in"></i></div>
+                <div class="info-card-body">
+                  <span class="info-card-label" data-i18n="last_login">Last Login</span>
+                  <span class="info-card-value" id="info-lastlogin-sub">-</span>
+                </div>
+              </div>
+              <div class="profile-info-card">
+                <div class="info-card-icon"><i data-lucide="clock"></i></div>
+                <div class="info-card-body">
+                  <span class="info-card-label" data-i18n="timezone_label">Timezone</span>
+                  <span class="info-card-value" id="info-timezone-sub">-</span>
+                </div>
+              </div>
+              <div class="profile-info-card">
+                <div class="info-card-icon"><i data-lucide="languages"></i></div>
+                <div class="info-card-body">
+                  <span class="info-card-label" data-i18n="language_label">Language</span>
+                  <span class="info-card-value" id="info-language-sub">-</span>
+                </div>
+              </div>
+              <div class="profile-info-card">
+                <div class="info-card-icon"><i data-lucide="palette"></i></div>
+                <div class="info-card-body">
+                  <span class="info-card-label" data-i18n="theme_label">Theme</span>
+                  <span class="info-card-value" id="info-theme-sub">-</span>
+                </div>
+              </div>
+            </div>
+            <!-- Session Info -->
+            <h3 class="profile-section-heading" data-i18n="session_info">Session Information</h3>
+            <div class="profile-session-cards">
+              <div class="profile-session-card">
+                <i data-lucide="monitor"></i>
+                <div>
+                  <span class="session-card-label" data-i18n="device_info">Device</span>
+                  <span class="session-card-value" id="session-device-sub">-</span>
+                </div>
+              </div>
+              <div class="profile-session-card">
+                <i data-lucide="globe"></i>
+                <div>
+                  <span class="session-card-label" data-i18n="browser_info">Browser</span>
+                  <span class="session-card-value" id="session-browser-sub">-</span>
+                </div>
+              </div>
+              <div class="profile-session-card">
+                <i data-lucide="clock-3"></i>
+                <div>
+                  <span class="session-card-label" data-i18n="current_login">Login Time</span>
+                  <span class="session-card-value" id="session-logintime-sub">-</span>
+                </div>
+              </div>
+            </div>
+            <!-- Logout Button -->
+            <div class="profile-logout-section">
+              <button class="profile-logout-btn" id="profile-tab-logout-btn-sub">
+                <i data-lucide="log-out"></i>
+                <span data-i18n="logout">Sign Out</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= VIEW 7: PROFILE EDIT PROFILE (SUB-PAGE) ================= -->
+        <section id="view-profile-edit" class="app-view">
+          <div class="profile-sub-page">
+            <a href="#profile-settings" class="profile-back-btn">
+              <i data-lucide="arrow-left"></i>
+              <span data-i18n="back_to_settings">Back to Settings</span>
+            </a>
+            <div class="settings-content-panel">
+              <h2 data-i18n="edit_profile">Edit Profile</h2>
+              <form id="edit-profile-form" class="settings-form">
+                <div class="form-group">
+                  <label data-i18n="profile_photo">Profile Photo</label>
+                  <div class="profile-photo-upload-wrapper">
+                    <div class="profile-photo-preview-box">
+                      <img id="edit-profile-pic-preview" class="profile-pic-preview" src="" style="display:none;">
+                      <div id="edit-profile-initials-preview" class="profile-initials-preview">U</div>
+                    </div>
+                    <div class="photo-upload-actions">
+                      <label for="profile-photo-file" class="btn-primary" style="padding: 0 16px; height: 36px; line-height: 36px; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i data-lucide="upload"></i> <span data-i18n="upload_photo">Upload Photo</span>
+                      </label>
+                      <input type="file" id="profile-photo-file" accept="image/*" style="display:none;">
+                      <button type="button" class="btn-secondary" id="remove-profile-pic-btn" data-i18n="remove">Remove</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="profile-edit-name" data-i18n="user_name">User Name</label>
+                  <input type="text" id="profile-edit-name" required>
+                </div>
+                <div class="form-group">
+                  <label for="profile-edit-email" data-i18n="email_label">Email Address</label>
+                  <input type="email" id="profile-edit-email" required>
+                </div>
+                <div class="form-group">
+                  <label for="profile-edit-mobile" data-i18n="mobile_label">Mobile Number</label>
+                  <input type="text" id="profile-edit-mobile">
+                </div>
+                <button type="submit" class="btn-primary" style="height:40px; margin-top: 10px;" data-i18n="update">Update Settings</button>
+              </form>
+            </div>
+          </div>
+        </section>        <!-- ================= VIEW 8: PROFILE PREFERENCES (SUB-PAGE) ================= -->
+        <section id="view-profile-preferences" class="app-view">
+          <div class="profile-sub-page">
+            <a href="#profile-settings" class="profile-back-btn">
+              <i data-lucide="arrow-left"></i>
+              <span data-i18n="back_to_settings">Back to Settings</span>
+            </a>
+            <div class="settings-content-panel">
+              <h2 data-i18n="preferences">Preferences</h2>
+              <form id="preferences-form" class="settings-form">
+                <div class="form-group">
+                  <label for="pref-language" data-i18n="language_label">Language</label>
+                  <select id="pref-language">
+                    <!-- Dynamically populated flag values -->
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="pref-theme" data-i18n="theme_label">Theme</label>
+                  <select id="pref-theme">
+                    <option value="light" data-i18n="light_mode">Light Mode</option>
+                    <option value="dark" data-i18n="dark_mode">Dark Mode</option>
+                    <option value="system" data-i18n="system_default">System Default</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="pref-timezone" data-i18n="timezone_label">Timezone</label>
+                  <div style="display:flex; gap:10px; align-items:center; margin-bottom:8px;">
+                    <label class="checkbox-container" style="font-size:12px;">
+                      <input type="checkbox" id="pref-timezone-auto">
+                      <span data-i18n="timezone_autodetect">Auto-detect Timezone</span>
+                    </label>
+                  </div>
+                  <select id="pref-timezone">
+                    <option value="Asia/Kolkata">IST (Asia/Kolkata)</option>
+                    <option value="UTC">UTC</option>
+                    <option value="America/New_York">EST (America/New_York)</option>
+                    <option value="Europe/London">GMT/BST (Europe/London)</option>
+                    <option value="Asia/Singapore">SGT (Asia/Singapore)</option>
+                    <option value="Australia/Sydney">AEST (Australia/Sydney)</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label data-i18n="notification_preferences">Notification Preferences</label>
+                  <div style="display:flex; flex-direction:column; gap:10px; margin-top:8px;">
+                    <label class="checkbox-container">
+                      <input type="checkbox" id="pref-notify-txn">
+                      <span data-i18n="transaction_notifications">Transaction Notifications</span>
+                    </label>
+                    <label class="checkbox-container">
+                      <input type="checkbox" id="pref-notify-backup">
+                      <span data-i18n="backup_notifications">Backup Notifications</span>
+                    </label>
+                    <label class="checkbox-container">
+                      <input type="checkbox" id="pref-notify-system">
+                      <span data-i18n="system_notifications">System Notifications</span>
+                    </label>
+                    <label class="checkbox-container">
+                      <input type="checkbox" id="pref-notify-reminder">
+                      <span data-i18n="reminder_notifications">Reminder Notifications</span>
+                    </label>
+                  </div>
+                </div>
+                
+                <button type="submit" class="btn-primary" style="height:40px; margin-top: 10px;" data-i18n="update">Update Settings</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= VIEW 9: PROFILE SECURITY (SUB-PAGE) ================= -->
+        <section id="view-profile-security" class="app-view">
+          <div class="profile-sub-page">
+            <a href="#profile-settings" class="profile-back-btn">
+              <i data-lucide="arrow-left"></i>
+              <span data-i18n="back_to_settings">Back to Settings</span>
+            </a>
+            <div class="settings-content-panel">
+              <h2 data-i18n="security_settings">Security Settings</h2>
+              <form id="security-form" class="settings-form">
+                <div class="form-group">
+                  <label for="security-current-password" data-i18n="current_password">Current Password</label>
+                  <input type="password" id="security-current-password" required>
+                </div>
+                <div class="form-group">
+                  <label for="security-new-password" data-i18n="new_password">New Password</label>
+                  <input type="password" id="security-new-password" required>
+                </div>
+                <div class="form-group">
+                  <label for="security-confirm-password" data-i18n="confirm_password">Confirm Password</label>
+                  <input type="password" id="security-confirm-password" required>
+                </div>
+                <div style="margin-bottom: 16px;">
+                  <label class="checkbox-container" style="font-size:12px;">
+                    <input type="checkbox" id="security-toggle-visibility">
+                    <span data-i18n="visibility_toggle">Show Passwords</span>
+                  </label>
+                </div>
+                <button type="submit" class="btn-primary" style="height:40px;" data-i18n="change_password">Change Password</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= VIEW 10: PROFILE ACTIVITY (SUB-PAGE) ================= -->
+        <section id="view-profile-activity" class="app-view">
+          <div class="profile-sub-page">
+            <a href="#profile-settings" class="profile-back-btn">
+              <i data-lucide="arrow-left"></i>
+              <span data-i18n="back_to_settings">Back to Settings</span>
+            </a>
+            <div class="settings-content-panel">
+              <h2 data-i18n="activity_log">Activity History</h2>
+              <div class="activity-log-container">
+                <div class="activity-log-list" id="activity-log-list-ul">
+                  <!-- Dynamic logs loaded -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= VIEW 11: PROFILE BACKUP & EXPORT (SUB-PAGE) ================= -->
+        <section id="view-profile-backup" class="app-view">
+          <div class="profile-sub-page">
+            <a href="#profile-settings" class="profile-back-btn">
+              <i data-lucide="arrow-left"></i>
+              <span data-i18n="back_to_settings">Back to Settings</span>
+            </a>
+            <div class="settings-content-panel">
+              <h2 data-i18n="backup_export">Backup & Export</h2>
+              <p style="color:var(--text-muted); font-size:13px; margin-bottom:20px;" data-i18n="backup_export_subtitle">
+                Configure automated email backups, create manual ZIP backups, and restore your system data.
+              </p>
+              <div class="backup-sections-container">
+                <div class="backup-grid-row">
+                  <div class="backup-card">
+                    <h3 class="backup-card-title">
+                      <i data-lucide="settings"></i>
+                      <span data-i18n="backup_settings_title">Backup Settings</span>
+                    </h3>
+                    <form id="backup-settings-form" class="settings-form">
+                      <div class="form-group">
+                        <label data-i18n="backup_email_destination">Backup Email Destination</label>
+                        <input type="text" id="backup-email-dest" readonly style="background-color: var(--bg-body); cursor: not-allowed;" title="Backups will be sent to your registered profile email address.">
+                      </div>
+                      <div class="form-row-2">
+                        <div class="form-group">
+                          <label for="backup-schedule-select" data-i18n="backup_schedule_label">Backup Schedule</label>
+                          <select id="backup-schedule-select">
+                            <option value="manual" data-i18n="schedule_manual">Manual Only</option>
+                            <option value="daily" data-i18n="schedule_daily">Daily</option>
+                            <option value="weekly" data-i18n="schedule_weekly">Weekly</option>
+                            <option value="10days" data-i18n="schedule_10days">Every 10 Days</option>
+                            <option value="monthly" data-i18n="schedule_monthly">Monthly</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="backup-time-input" data-i18n="backup_time_label">Backup Time</label>
+                          <input type="time" id="backup-time-input" required>
+                        </div>
+                      </div>
+                      <div class="backup-settings-actions">
+                        <button type="submit" class="btn-primary" data-i18n="save_settings">Save Settings</button>
+                        <button type="button" class="btn-secondary" id="backup-now-btn" style="display: inline-flex; align-items: center; gap: 8px;">
+                          <i data-lucide="play"></i> <span data-i18n="backup_now">Backup Now</span>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="backup-card">
+                    <h3 class="backup-card-title">
+                      <i data-lucide="upload-cloud"></i>
+                      <span data-i18n="restore_backup_title">Restore Backup</span>
+                    </h3>
+                    <div class="restore-dropzone" id="restore-dropzone">
+                      <i data-lucide="file-archive" class="dropzone-icon"></i>
+                      <p class="dropzone-text" data-i18n="restore_dropzone_text">Drag & drop backup ZIP file here or click to select</p>
+                      <input type="file" id="restore-file-input" accept=".zip" style="display: none;">
+                      <button type="button" class="btn-secondary btn-sm" id="restore-select-btn" data-i18n="select_backup_file">Select Backup File</button>
+                    </div>
+                    <div class="restore-progress-bar hidden" id="restore-progress-container">
+                      <div class="progress-bar-inner" id="restore-progress-bar"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="backup-card backup-history-card">
+                  <h3 class="backup-card-title">
+                    <i data-lucide="history"></i>
+                    <span data-i18n="backup_history_title">Backup History</span>
+                  </h3>
+                  <div class="backup-table-wrapper">
+                    <table class="backup-history-table">
+                      <thead>
+                        <tr>
+                          <th data-i18n="history_date">Date & Time</th>
+                          <th data-i18n="history_type">Type</th>
+                          <th data-i18n="history_status">Status</th>
+                          <th data-i18n="history_size">Size</th>
+                          <th data-i18n="history_actions" style="text-align: right;">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="backup-history-list">
+                        <!-- Dynamic history items -->
+                        <tr>
+                          <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 30px;" data-i18n="no_backup_history">No backups found. Click "Backup Now" to create your first backup.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="backup-card secondary-exports-card">
+                  <h3 class="backup-card-title" style="margin-bottom: 12px;">
+                    <i data-lucide="download"></i>
+                    <span data-i18n="csv_exports_title">Manual File Exports</span>
+                  </h3>
+                  <p style="color:var(--text-muted); font-size:12px; margin-bottom:16px;" data-i18n="csv_exports_subtitle">
+                    Export individual sections of KhataBook to raw CSV formats or download the entire database as a JSON.
+                  </p>
+                  <div class="backup-export-grid">
+                    <button class="backup-btn-card" id="export-customers-btn">
+                      <i data-lucide="users"></i>
+                      <span data-i18n="export_customers">Export Customers CSV</span>
+                    </button>
+                    <button class="backup-btn-card" id="export-transactions-btn">
+                      <i data-lucide="receipt"></i>
+                      <span data-i18n="export_transactions">Export Transactions CSV</span>
+                    </button>
+                    <button class="backup-btn-card" id="export-aadhaar-btn">
+                      <i data-lucide="id-card"></i>
+                      <span data-i18n="export_aadhaar">Export Aadhaar Data CSV</span>
+                    </button>
+                    <button class="backup-btn-card" id="export-bank-btn">
+                      <i data-lucide="landmark"></i>
+                      <span data-i18n="export_bank">Export Bank Accounts CSV</span>
+                    </button>
+                    <button class="backup-btn-card primary-backup" id="export-complete-btn" style="grid-column: span 2;">
+                      <i data-lucide="download-cloud"></i>
+                      <span data-i18n="export_complete_backup">Download Complete JSON Backup</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+    
+    <!-- Bottom Navigation Bar for Mobile -->
+    <nav class="mobile-bottom-nav">
+      <a href="#dashboard" class="mobile-nav-item active" id="mobile-nav-dashboard">
+        <i data-lucide="layout-dashboard"></i>
+        <span data-i18n="dashboard">Dashboard</span>
+      </a>
+      <a href="#khata-book" class="mobile-nav-item" id="mobile-nav-khata-book">
+        <i data-lucide="notebook"></i>
+        <span data-i18n="khata_book">Khata Book</span>
+      </a>
+      <a href="#aadhaar-cards" class="mobile-nav-item" id="mobile-nav-aadhaar-cards">
+        <i data-lucide="id-card"></i>
+        <span data-i18n="aadhaar_cards">Aadhaar</span>
+      </a>
+      <a href="#bank-accounts" class="mobile-nav-item" id="mobile-nav-bank-accounts">
+        <i data-lucide="landmark"></i>
+        <span data-i18n="bank_accounts">Banking</span>
+      </a>
+      <a href="#profile-settings" class="mobile-nav-item" id="mobile-nav-profile-settings">
+        <i data-lucide="user"></i>
+        <span data-i18n="profile_settings">Settings</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- 1. Add / Edit Customer Modal -->
+  <div class="modal-overlay" id="customer-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="customer-modal-title">Create New Customer</h3>
+        <button class="modal-close" id="customer-modal-close-btn">&times;</button>
+      </div>
+      <form id="customer-form">
+        <input type="hidden" id="cust-modal-id">
+        <div class="form-group">
+          <label for="cust-modal-name" data-i18n="customer_name">Customer Name <span class="required">*</span></label>
+          <input type="text" id="cust-modal-name" required placeholder="" data-i18n-placeholder="customer_placeholder_name">
+        </div>
+        <div class="form-group">
+          <label for="cust-modal-phone" data-i18n="mobile_label">Mobile Number (Optional)</label>
+          <input type="tel" id="cust-modal-phone" placeholder="" data-i18n-placeholder="customer_placeholder_phone" pattern="[0-9]{10}">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="customer-modal-cancel-btn" data-i18n="cancel">Cancel</button>
+          <button type="submit" class="btn-primary" id="customer-modal-submit-btn" data-i18n="save">Save Customer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Add / Edit Transaction Modal -->
+  <div class="modal-overlay" id="txn-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="txn-modal-title">Add Transaction Entry</h3>
+        <button class="modal-close" id="txn-modal-close-btn">&times;</button>
+      </div>
+      <form id="txn-form">
+        <input type="hidden" id="txn-modal-id">
+        
+        <div class="form-group">
+          <label data-i18n="transaction_type">Transaction Type <span class="required">*</span></label>
+          <div class="type-toggle-group">
+            <label class="toggle-btn-label">
+              <input type="radio" name="txn_type" value="credit" checked id="txn-type-credit">
+              <div class="toggle-button credit-toggle">
+                <i data-lucide="plus"></i>
+                <span data-i18n="credit">Credit (Money Received)</span>
+              </div>
+            </label>
+            <label class="toggle-btn-label">
+              <input type="radio" name="txn_type" value="debit" id="txn-type-debit">
+              <div class="toggle-button debit-toggle">
+                <i data-lucide="minus"></i>
+                <span data-i18n="debit">Debit (Money Given)</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="txn-modal-amount" data-i18n="amount">Amount (Rs.) <span class="required">*</span></label>
+          <input type="number" id="txn-modal-amount" required step="0.01" min="0.01" placeholder="" data-i18n-placeholder="transaction_amount_placeholder">
+        </div>
+
+        <div class="form-group">
+          <label for="txn-modal-note" data-i18n="description_note">Note / Description (Optional)</label>
+          <textarea id="txn-modal-note" placeholder="" data-i18n-placeholder="transaction_note_placeholder"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="txn-modal-date" data-i18n="date_time">Date & Time (IST)</label>
+          <input type="datetime-local" id="txn-modal-date">
+          <small class="form-help-text" data-i18n="date_help_text">Auto-filled with current IST. Edit if recording past transaction.</small>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="txn-modal-cancel-btn" data-i18n="cancel">Cancel</button>
+          <button type="submit" class="btn-primary" data-i18n="save_transaction">Save Transaction</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Confirmation Dialog (Generic Delete) -->
+  <div class="modal-overlay" id="confirm-modal">
+    <div class="modal-box confirm-box">
+      <div class="modal-header">
+        <h3 id="confirm-modal-title">Confirm Action</h3>
+        <button class="modal-close" id="confirm-modal-close-btn">&times;</button>
+      </div>
+      <div class="confirm-content">
+        <p id="confirm-modal-message" data-i18n="confirm_delete_message">Are you sure you want to perform this action? This cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" id="confirm-modal-cancel-btn" data-i18n="cancel">No, Cancel</button>
+        <button type="button" class="btn-primary" id="confirm-modal-submit-btn">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 4. AADHAAR CARD MODAL ================= -->
+  <div class="modal-overlay" id="aadhaar-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="aadhaar-modal-title">Add Aadhaar Card</h3>
+        <button class="modal-close" id="aadhaar-modal-close-btn">&times;</button>
+      </div>
+      <form id="aadhaar-form">
+        <input type="hidden" id="aadhaar-modal-id">
+        
+        <div class="form-group">            <label for="aadhaar-image-input" data-i18n="upload_photo">Aadhaar Photo</label>
+          <div class="image-upload-area" id="aadhaar-image-upload-area">
+            <div class="image-upload-placeholder" id="aadhaar-image-placeholder">
+              <i data-lucide="camera"></i>
+              <span data-i18n="click_here_upload">Click to upload photo</span>
+              <small data-i18n="image_formats">Supports JPG, PNG, WEBP</small>
+            </div>
+            <img id="aadhaar-image-preview" class="image-preview hidden" alt="" data-i18n-title="upload_photo">
+            <input type="file" id="aadhaar-image-input" accept="image/*" style="display:none">
+            <button type="button" class="btn-secondary btn-icon-text image-remove-btn hidden" id="aadhaar-image-remove-btn">
+              <i data-lucide="x"></i>
+              <span data-i18n="remove">Remove</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="aadhaar-modal-number" data-i18n="aadhaar_number">Aadhaar Number <span class="required">*</span></label>
+          <input type="text" id="aadhaar-modal-number" required placeholder="" data-i18n-placeholder="enter_aadhaar_number" inputmode="numeric" pattern="[0-9]*" title="" data-i18n-title="only_digits_error" autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label for="aadhaar-modal-name" data-i18n="holder_name">Holder Name <span class="required">*</span></label>
+          <input type="text" id="aadhaar-modal-name" required placeholder="" data-i18n-placeholder="enter_aadhaar_name" pattern="[^\d]+" title="" data-i18n-title="name_nums_error" autocomplete="off">
+        </div>
+
+        <div class="modal-footer vertical-actions">
+          <button type="submit" class="btn-primary" id="aadhaar-modal-submit-btn">Save Card</button>
+          <button type="button" class="btn-secondary" id="aadhaar-modal-cancel-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= 5. BANK ACCOUNT MODAL ================= -->
+  <div class="modal-overlay" id="bank-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="bank-modal-title">Add Bank Account</h3>
+        <button class="modal-close" id="bank-modal-close-btn">&times;</button>
+      </div>
+      <form id="bank-form">
+        <input type="hidden" id="bank-modal-id">
+        
+        <div class="form-group">
+          <label for="bank-image-input" data-i18n="bank_photo_logo">Bank Photo / Logo</label>
+          <div class="image-upload-area" id="bank-image-upload-area">
+            <div class="image-upload-placeholder" id="bank-image-placeholder">
+              <i data-lucide="camera"></i>
+              <span data-i18n="click_here_upload">Click to upload photo</span>
+              <small data-i18n="image_formats">Supports JPG, PNG, WEBP</small>
+            </div>
+            <img id="bank-image-preview" class="image-preview hidden" alt="" data-i18n-title="bank_photo_logo">
+            <input type="file" id="bank-image-input" accept="image/*" style="display:none">
+            <button type="button" class="btn-secondary btn-icon-text image-remove-btn hidden" id="bank-image-remove-btn">
+              <i data-lucide="x"></i>
+              <span data-i18n="remove">Remove</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="bank-modal-number" data-i18n="account_number">Account Number <span class="required">*</span></label>
+          <input type="text" id="bank-modal-number" required placeholder="" data-i18n-placeholder="enter_bank_account_number" inputmode="numeric" pattern="[0-9]*" title="" data-i18n-title="only_digits_error" autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label for="bank-modal-name" data-i18n="account_holder">Account Holder Name <span class="required">*</span></label>
+          <input type="text" id="bank-modal-name" required placeholder="" data-i18n-placeholder="enter_account_holder" pattern="[^\d]+" title="" data-i18n-title="name_nums_error" autocomplete="off">
+        </div>
+
+        <div class="modal-footer vertical-actions">
+          <button type="submit" class="btn-primary" id="bank-modal-submit-btn">Save Account</button>
+          <button type="button" class="btn-secondary" id="bank-modal-cancel-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Global Toast Notification System -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Mobile Settings Bottom Sheet -->
+  <div class="mobile-settings-overlay hidden" id="mobile-settings-overlay">
+    <div class="mobile-settings-sheet" id="mobile-settings-sheet">
+      <div class="sheet-header">
+        <div class="sheet-drag-handle"></div>
+        <div class="sheet-title-row">
+          <span class="sheet-title" data-i18n="profile_settings">Settings</span>
+          <button class="sheet-close-btn" id="mobile-settings-close-btn">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+      </div>
+      <div class="sheet-content">
+        <div class="sheet-profile-card">
+          <div class="sheet-avatar" id="sheet-profile-avatar">U</div>
+          <div class="sheet-user-info">
+            <h4 id="sheet-user-name">KhataBook Owner</h4>
+            <span id="sheet-user-email">owner@email.com</span>
+          </div>
+        </div>
+        <div class="sheet-menu-list">
+          <a href="#profile-settings" class="sheet-menu-item" id="sheet-my-profile">
+            <div class="sheet-menu-left">
+              <i data-lucide="user"></i>
+              <span data-i18n="my_profile">My Profile</span>
+            </div>
+            <i data-lucide="chevron-right" class="sheet-chevron"></i>
+          </a>
+          
+          <a href="#profile-settings" class="sheet-menu-item" id="sheet-language">
+            <div class="sheet-menu-left">
+              <i data-lucide="languages"></i>
+              <span data-i18n="language_label">Language</span>
+            </div>
+            <i data-lucide="chevron-right" class="sheet-chevron"></i>
+          </a>
+          
+          <a href="#profile-settings" class="sheet-menu-item" id="sheet-theme">
+            <div class="sheet-menu-left">
+              <i data-lucide="palette"></i>
+              <span data-i18n="theme_label">Theme</span>
+            </div>
+            <i data-lucide="chevron-right" class="sheet-chevron"></i>
+          </a>
+          
+          <a href="#profile-settings" class="sheet-menu-item" id="sheet-preferences">
+            <div class="sheet-menu-left">
+              <i data-lucide="settings"></i>
+              <span data-i18n="preferences">Preferences</span>
+            </div>
+            <i data-lucide="chevron-right" class="sheet-chevron"></i>
+          </a>
+          
+          <a href="#profile-settings" class="sheet-menu-item" id="sheet-security">
+            <div class="sheet-menu-left">
+              <i data-lucide="lock"></i>
+              <span data-i18n="security">Security Settings</span>
+            </div>
+            <i data-lucide="chevron-right" class="sheet-chevron"></i>
+          </a>
+          
+          <a href="#profile-settings" class="sheet-menu-item" id="sheet-activity">
+            <div class="sheet-menu-left">
+              <i data-lucide="history"></i>
+              <span data-i18n="activity_log">Activity History</span>
+            </div>
+            <i data-lucide="chevron-right" class="sheet-chevron"></i>
+          </a>
+          
+          <a href="#profile-settings" class="sheet-menu-item" id="sheet-backup">
+            <div class="sheet-menu-left">
+              <i data-lucide="download-cloud"></i>
+              <span data-i18n="backup_export">Backup & Export</span>
+            </div>
+            <i data-lucide="chevron-right" class="sheet-chevron"></i>
+          </a>
+          
+          <a href="#profile-settings" class="sheet-menu-item" id="sheet-timezone">
+            <div class="sheet-menu-left">
+              <i data-lucide="globe"></i>
+              <span data-i18n="timezone_label">Timezone</span>
+            </div>
+            <i data-lucide="chevron-right" class="sheet-chevron"></i>
+          </a>
+          
+          <button class="sheet-menu-item logout-btn" id="sheet-logout-btn">
+            <div class="sheet-menu-left">
+              <i data-lucide="log-out"></i>
+              <span data-i18n="logout">Logout</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logout Confirmation Modal -->
+  <div class="modal-overlay hidden" id="logout-confirm-modal">
+    <div class="modal-dialog logout-confirm-dialog">
+      <div class="logout-confirm-icon">
+        <i data-lucide="log-out"></i>
+      </div>
+      <h3 data-i18n="logout_confirm_title">Sign Out</h3>
+      <p data-i18n="logout_confirm_msg">Are you sure you want to sign out of your account?</p>
+      <div class="logout-confirm-actions">
+        <button class="btn-secondary" id="logout-cancel-btn" data-i18n="cancel">Cancel</button>
+        <button class="logout-confirm-btn" id="logout-confirm-btn">
+          <i data-lucide="log-out"></i>
+          <span data-i18n="sign_out_confirm">Yes, Sign Out</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Google Auth Overlay for Dimming background during Google Sign-In -->
+  <div class="google-auth-overlay hidden" id="google-auth-overlay">
+    <div class="google-auth-box">
+      <div class="google-auth-spinner"></div>
+      <h3 class="google-auth-title" data-i18n="google_auth_title">Google Authentication</h3>
+      <p class="google-auth-subtitle" data-i18n="google_auth_subtitle">Please complete the sign-in process inside the Google popup window.</p>
+    </div>
+  </div>
+
+
+
+  <!-- Auth Error Toast -->
+  <div class="auth-toast hidden" id="auth-error-toast">
+    <i data-lucide="alert-circle"></i>
+    <span id="auth-toast-message">Error message</span>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then((reg) => console.log('[PWA] Service Worker registered scope:', reg.scope))
+          .catch((err) => console.error('[PWA] Service Worker registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>
